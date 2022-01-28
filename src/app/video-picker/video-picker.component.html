@@ -1,0 +1,5 @@
+<input [(ngModel)]="url" placeholder="YouTube URL" class="form-control">
+
+<button type="button" class="btn btn-primary" (click)="launchEditor()" [disabled]="!isValidUrl()">
+    Go!
+</button>

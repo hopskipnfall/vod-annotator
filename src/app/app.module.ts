@@ -3,14 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VideoPickerComponent } from './video-picker/video-picker.component';
+import { FormsModule } from '@angular/forms';
+import { EditorViewComponent } from './editor-view/editor-view.component';
+import { MemoListComponent } from './memo-list/memo-list.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    VideoPickerComponent,
+    EditorViewComponent,
+    MemoListComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
