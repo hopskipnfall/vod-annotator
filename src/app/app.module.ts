@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { MemoListComponent } from './memo-list/memo-list.component';
 import { PlayerComponent } from './player/player.component';
+import { YouTubePlayerModule } from '@angular/youtube-player';
+import { TimestampPipe } from './timestamp.pipe';
 
 @NgModule({
   declarations: [
@@ -16,13 +18,15 @@ import { PlayerComponent } from './player/player.component';
     VideoPickerComponent,
     EditorViewComponent,
     MemoListComponent,
-    PlayerComponent
+    PlayerComponent,
+    TimestampPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    YouTubePlayerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

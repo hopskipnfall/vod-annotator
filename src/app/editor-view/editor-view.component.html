@@ -1,7 +1,11 @@
-<p>editor-view works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <app-player [youtubeId]="annotations.youtubeId"></app-player>
+        </div>
 
-<app-player [youtubeId]="encodedMessage.youtubeId"></app-player>
-
-<br>
-
-<app-memo-list></app-memo-list>
+        <div class="col">
+            <app-memo-list [annotations]="annotations"></app-memo-list>
+        </div>
+    </div>
+</div>
