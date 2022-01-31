@@ -12,7 +12,7 @@ export class VideoService {
 
   constructor() { }
 
-  setPlayer(player : YouTubePlayer) {
+  setPlayer(player: YouTubePlayer) {
     this.player = player;
     this.ready.next(true);
   }
@@ -20,14 +20,14 @@ export class VideoService {
   getTime(): number {
     if (!this.player) {
       throw Error("player isn't loaded yet!");
-    }    
+    }
     return this.player.getCurrentTime();
   }
 
   pause() {
     if (!this.player) {
       throw Error("player isn't loaded yet!");
-    }    
+    }
 
     this.player.pauseVideo();
   }
@@ -35,7 +35,7 @@ export class VideoService {
   play() {
     if (!this.player) {
       throw Error("player isn't loaded yet!");
-    }    
+    }
 
     this.player.playVideo();
   }
@@ -43,12 +43,16 @@ export class VideoService {
   seekTo(seconds: number) {
     if (!this.player) {
       throw Error("player isn't loaded yet!");
-    }    
+    }
 
     this.player.seekTo(seconds, true);
   }
 
-  getReady() : Observable<Boolean> {
+  getReady(): Observable<Boolean> {
     return this.ready.asObservable();
+  }
+
+  getPlayerState(): (YT.PlayerState | undefined) {
+    return this.player?.getPlayerState();
   }
 }

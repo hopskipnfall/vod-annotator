@@ -33,7 +33,5 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     this.player?.ready.subscribe(a => {
       this.video.setPlayer(this.player);
     });
-
-    this.player.stateChange.subscribe(state => {console.log('aaaa', state)});
   }
 }
