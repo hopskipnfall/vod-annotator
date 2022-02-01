@@ -110,7 +110,8 @@ export class EditorViewComponent implements OnInit {
     const path = location.origin + this.urlSerializer.serialize(thingy);
     console.log('serialized path', path)
     if (this.clipboard.copy(path)) {
-
+      // TODO: Show a toast.
+      // TODO: Give a warning if the length is over 2K characters that it might not work in all browsers.
     }
   }
 
