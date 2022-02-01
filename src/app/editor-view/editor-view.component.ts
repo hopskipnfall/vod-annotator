@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -37,12 +37,12 @@ export class EditorViewComponent implements OnInit {
   constructor(
     private video: VideoService,
     route: ActivatedRoute,
-    @Inject(DOCUMENT) private document: Document,
     private router: Router,
     private urlSerializer: UrlSerializer,
     private objectSerializer: ObjectSerializerService,
     private clipboard: Clipboard,
-    private timestamp: TimestampPipe
+    private timestamp: TimestampPipe,
+    private location: Location
   ) {
     if (route.snapshot.queryParamMap.has('ytid')) {
       this.annotations = {
@@ -139,7 +139,9 @@ export class EditorViewComponent implements OnInit {
         ),
       },
     });
-    const path = location.origin + this.urlSerializer.serialize(thingy);
+    const path =
+      location.host +
+      this.location.prepareExternalUrl(this.urlSerializer.serialize(thingy));
     console.log('serialized path', path);
     if (this.clipboard.copy(path)) {
       // TODO: Show a toast.
