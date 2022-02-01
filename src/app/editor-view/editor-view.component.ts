@@ -49,9 +49,9 @@ export class EditorViewComponent implements OnInit {
         youtubeId: route.snapshot.queryParamMap.get('ytid') || '',
         memos: [],
       };
-    } else if (route.snapshot.paramMap.keys.includes('encodedMessage')) {
+    } else if (route.snapshot.queryParamMap.has('annotations')) {
       this.annotations = this.objectSerializer.deserializeAnnotations(
-        route.snapshot.paramMap.get('encodedMessage')!
+        route.snapshot.queryParamMap.get('annotations')!
       );
     }
 
@@ -132,10 +132,13 @@ export class EditorViewComponent implements OnInit {
   }
 
   createShareLink() {
-    const thingy = this.router.createUrlTree([
-      'editor',
-      this.objectSerializer.serializeAnnotations(this.annotations),
-    ]);
+    const thingy = this.router.createUrlTree(['editor'], {
+      queryParams: {
+        annotations: this.objectSerializer.serializeAnnotations(
+          this.annotations
+        ),
+      },
+    });
     const path = location.origin + this.urlSerializer.serialize(thingy);
     console.log('serialized path', path);
     if (this.clipboard.copy(path)) {

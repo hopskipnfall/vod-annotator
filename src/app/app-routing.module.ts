@@ -12,10 +12,6 @@ const routes: Routes = [
     path: 'editor',
     component: EditorViewComponent,
   },
-  {
-    path: 'editor/:encodedMessage',
-    component: EditorViewComponent,
-  },
 ];
 
 @NgModule({
