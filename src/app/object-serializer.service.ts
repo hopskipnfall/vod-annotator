@@ -24,7 +24,7 @@ export class ObjectSerializerService {
 
   serializeAnnotations(annotations: Annotations): string {
     const simplified =
-      [annotations.youtubeId, ...annotations.memos.flatMap(memo => [memo.timestampMs, memo.message])];
+      [annotations.youtubeId, ...annotations.memos.flatMap(memo => [memo.timestampSeconds, memo.message])];
     return this.b64EncodeUnicode(JSON.stringify(simplified));
   }
 
@@ -38,7 +38,7 @@ export class ObjectSerializerService {
 
     for (let i = 1; i + 1 < parsed.length; i += 2) {
       annotations.memos.push({
-        timestampMs: parsed[i] as number,
+        timestampSeconds: parsed[i] as number,
         message: parsed[i + 1] as string,
       });
     }

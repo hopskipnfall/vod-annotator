@@ -22,12 +22,12 @@ export class MemoListComponent implements OnInit {
 
   createMemo() {
     this.annotations.memos.push({
-      timestampMs: Math.round(this.video.getTime()*10)/10,
+      timestampSeconds: Math.round(this.video.getTime()*10)/10,
       message: '',
     });
 
     // Should probably be using observables and pipes lol.
-    this.annotations.memos = this.annotations.memos.sort((a, b) => a.timestampMs - b.timestampMs);
+    this.annotations.memos = this.annotations.memos.sort((a, b) => a.timestampSeconds - b.timestampSeconds);
     this.video.pause();
   }
 

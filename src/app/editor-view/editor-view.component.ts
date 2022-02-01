@@ -5,6 +5,8 @@ import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { Annotations } from 'src/model';
 import { ObjectSerializerService } from '../object-serializer.service';
 import { VideoService } from '../video.service';
+import { saveAs } from 'file-saver';
+import { TimestampPipe } from '../timestamp.pipe';
 
 const ARROW_LEFT = 'ArrowLeft';
 const ARROW_RIGHT = 'ArrowRight';
@@ -23,7 +25,7 @@ export class EditorViewComponent implements OnInit {
 
   playerWidth = 400
 
-  constructor(private video: VideoService, route: ActivatedRoute, @Inject(DOCUMENT) private document: Document, private router: Router, private urlSerializer: UrlSerializer, private objectSerializer: ObjectSerializerService, private clipboard: Clipboard) {
+  constructor(private video: VideoService, route: ActivatedRoute, @Inject(DOCUMENT) private document: Document, private router: Router, private urlSerializer: UrlSerializer, private objectSerializer: ObjectSerializerService, private clipboard: Clipboard, private timestamp: TimestampPipe) {
     if (route.snapshot.queryParamMap.has('ytid')) {
       this.annotations = {
         youtubeId: route.snapshot.queryParamMap.get('ytid') || '',
@@ -107,6 +109,24 @@ export class EditorViewComponent implements OnInit {
     const thingy = this.router.createUrlTree(['editor', this.objectSerializer.serializeAnnotations(this.annotations)]);
     const path = location.origin + this.urlSerializer.serialize(thingy);
     console.log('serialized path', path)
-    this.clipboard.copy(path)
+    if (this.clipboard.copy(path)) {
+
+    }
+  }
+
+  saveAsCsv() {
+    // This is extremely stupid but to escape a double quote you.. do a second double quote.
+    // https://stackoverflow.com/a/17808731/2875073
+    const sanitize = (s: string) => s.replace(/"/g, '""');
+
+    let output = 'Timestamp,Comment,YouTube Link\n';
+    for (let i = 0; i < this.annotations.memos.length; i++) {
+      const memo = this.annotations.memos[i];
+      const timestampString = this.timestamp.transform(memo.timestampSeconds);
+      const url = `https://www.youtube.com/watch?v=${this.annotations.youtubeId}&t=${Math.floor(memo.timestampSeconds)}s`;
+      output += `"${timestampString}","${sanitize(memo.message)}","${url}"\n`;
+    }
+
+    saveAs(new Blob([output], { type: 'text/csv;charset=utf-8' }), 'vod_annotations.csv')
   }
 }

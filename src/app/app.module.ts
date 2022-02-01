@@ -21,7 +21,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     EditorViewComponent,
     MemoListComponent,
     PlayerComponent,
-    TimestampPipe
+    TimestampPipe,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +32,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatIconModule,
     TooltipModule,
   ],
-  providers: [],
+  providers: [
+    TimestampPipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
