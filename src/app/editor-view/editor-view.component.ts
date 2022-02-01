@@ -140,7 +140,7 @@ export class EditorViewComponent implements OnInit {
       },
     });
     const path =
-      location.host +
+      location.origin +
       this.location.prepareExternalUrl(this.urlSerializer.serialize(thingy));
     console.log('serialized path', path);
     if (this.clipboard.copy(path)) {
