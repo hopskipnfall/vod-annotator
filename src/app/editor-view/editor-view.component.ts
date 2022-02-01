@@ -18,27 +18,37 @@ const K = 'k';
 @Component({
   selector: 'app-editor-view',
   templateUrl: './editor-view.component.html',
-  styleUrls: ['./editor-view.component.scss']
+  styleUrls: ['./editor-view.component.scss'],
 })
 export class EditorViewComponent implements OnInit {
   annotations!: Annotations;
 
-  playerWidth = 400
+  playerWidth = 400;
 
-  constructor(private video: VideoService, route: ActivatedRoute, @Inject(DOCUMENT) private document: Document, private router: Router, private urlSerializer: UrlSerializer, private objectSerializer: ObjectSerializerService, private clipboard: Clipboard, private timestamp: TimestampPipe) {
+  constructor(
+    private video: VideoService,
+    route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document,
+    private router: Router,
+    private urlSerializer: UrlSerializer,
+    private objectSerializer: ObjectSerializerService,
+    private clipboard: Clipboard,
+    private timestamp: TimestampPipe
+  ) {
     if (route.snapshot.queryParamMap.has('ytid')) {
       this.annotations = {
         youtubeId: route.snapshot.queryParamMap.get('ytid') || '',
         memos: [],
-      }
-    }
-    else if (route.snapshot.paramMap.keys.includes('encodedMessage')) {
-      this.annotations = this.objectSerializer.deserializeAnnotations(route.snapshot.paramMap.get('encodedMessage')!);
+      };
+    } else if (route.snapshot.paramMap.keys.includes('encodedMessage')) {
+      this.annotations = this.objectSerializer.deserializeAnnotations(
+        route.snapshot.paramMap.get('encodedMessage')!
+      );
     }
 
     // Periodically if the iframe has focus and take it back so we can control what the arrow keys do.
     setInterval(() => {
-      if (document.activeElement?.tagName === "IFRAME") {
+      if (document.activeElement?.tagName === 'IFRAME') {
         console.info('YouTube iframe is in focus, blurring');
         (document.activeElement as HTMLElement).blur();
       }
@@ -81,9 +91,16 @@ export class EditorViewComponent implements OnInit {
 
   togglePlayback() {
     const state = this.video.getPlayerState();
-    if (state === YT.PlayerState.BUFFERING || state === YT.PlayerState.PLAYING) {
+    if (
+      state === YT.PlayerState.BUFFERING ||
+      state === YT.PlayerState.PLAYING
+    ) {
       this.video.pause();
-    } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.UNSTARTED || state === YT.PlayerState.CUED) {
+    } else if (
+      state === YT.PlayerState.PAUSED ||
+      state === YT.PlayerState.UNSTARTED ||
+      state === YT.PlayerState.CUED
+    ) {
       this.video.play();
     }
   }
@@ -93,22 +110,25 @@ export class EditorViewComponent implements OnInit {
     const width = window.innerWidth;
 
     if (width < 768) {
-      this.playerWidth = 514
+      this.playerWidth = 514;
     } else if (width < 992) {
-      this.playerWidth = 454
+      this.playerWidth = 454;
     } else if (width < 1200) {
-      this.playerWidth = 613
+      this.playerWidth = 613;
     } else if (width < 1400) {
-      this.playerWidth = 734
+      this.playerWidth = 734;
     } else {
-      this.playerWidth = 854
+      this.playerWidth = 854;
     }
   }
 
   createShareLink() {
-    const thingy = this.router.createUrlTree(['editor', this.objectSerializer.serializeAnnotations(this.annotations)]);
+    const thingy = this.router.createUrlTree([
+      'editor',
+      this.objectSerializer.serializeAnnotations(this.annotations),
+    ]);
     const path = location.origin + this.urlSerializer.serialize(thingy);
-    console.log('serialized path', path)
+    console.log('serialized path', path);
     if (this.clipboard.copy(path)) {
       // TODO: Show a toast.
       // TODO: Give a warning if the length is over 2K characters that it might not work in all browsers.
@@ -124,10 +144,15 @@ export class EditorViewComponent implements OnInit {
     for (let i = 0; i < this.annotations.memos.length; i++) {
       const memo = this.annotations.memos[i];
       const timestampString = this.timestamp.transform(memo.timestampSeconds);
-      const url = `https://www.youtube.com/watch?v=${this.annotations.youtubeId}&t=${Math.floor(memo.timestampSeconds)}s`;
+      const url = `https://www.youtube.com/watch?v=${
+        this.annotations.youtubeId
+      }&t=${Math.floor(memo.timestampSeconds)}s`;
       output += `"${timestampString}","${sanitize(memo.message)}","${url}"\n`;
     }
 
-    saveAs(new Blob([output], { type: 'text/csv;charset=utf-8' }), 'vod_annotations.csv')
+    saveAs(
+      new Blob([output], { type: 'text/csv;charset=utf-8' }),
+      'vod_annotations.csv'
+    );
   }
 }

@@ -11,7 +11,7 @@ import { MemoListComponent } from './memo-list/memo-list.component';
 import { PlayerComponent } from './player/player.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { TimestampPipe } from './timestamp.pipe';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
@@ -32,9 +32,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatIconModule,
     TooltipModule,
   ],
-  providers: [
-    TimestampPipe,
-  ],
-  bootstrap: [AppComponent]
+  providers: [TimestampPipe],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

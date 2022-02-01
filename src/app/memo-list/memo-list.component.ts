@@ -6,7 +6,7 @@ import { VideoService } from '../video.service';
 @Component({
   selector: 'app-memo-list',
   templateUrl: './memo-list.component.html',
-  styleUrls: ['./memo-list.component.scss']
+  styleUrls: ['./memo-list.component.scss'],
 })
 export class MemoListComponent implements OnInit {
   @Input() annotations!: Annotations;
@@ -17,17 +17,18 @@ export class MemoListComponent implements OnInit {
     this.playerReady = video.getReady();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   createMemo() {
     this.annotations.memos.push({
-      timestampSeconds: Math.round(this.video.getTime()*10)/10,
+      timestampSeconds: Math.round(this.video.getTime() * 10) / 10,
       message: '',
     });
 
     // Should probably be using observables and pipes lol.
-    this.annotations.memos = this.annotations.memos.sort((a, b) => a.timestampSeconds - b.timestampSeconds);
+    this.annotations.memos = this.annotations.memos.sort(
+      (a, b) => a.timestampSeconds - b.timestampSeconds
+    );
     this.video.pause();
   }
 

@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
 import { VideoService } from '../video.service';
 
@@ -7,15 +14,15 @@ let apiLoaded = false;
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss']
+  styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnInit, AfterViewInit {
   @Input() youtubeId!: string;
   @Input() width!: number;
 
-  @ViewChild("player") player!: YouTubePlayer;
+  @ViewChild('player') player!: YouTubePlayer;
 
-  constructor(private video: VideoService) { }
+  constructor(private video: VideoService) {}
 
   ngOnInit(): void {
     if (!apiLoaded) {
@@ -26,11 +33,10 @@ export class PlayerComponent implements OnInit, AfterViewInit {
       document.body.appendChild(tag);
       apiLoaded = true;
     }
-
   }
 
   async ngAfterViewInit() {
-    this.player?.ready.subscribe(a => {
+    this.player?.ready.subscribe((a) => {
       this.video.setPlayer(this.player);
     });
   }

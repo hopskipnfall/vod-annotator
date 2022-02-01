@@ -1,14 +1,33 @@
-<button type="button" class="btn btn-primary" (click)="createMemo()" [disabled]="!playerReady">
-    Add
+<button
+  type="button"
+  class="btn btn-primary"
+  (click)="createMemo()"
+  [disabled]="!playerReady"
+>
+  Add
 </button>
 
-<br>
+<br />
 
-<div class="card" style="margin-top: 10px" *ngFor="let memo of annotations.memos; index as i;">
-    <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted"><a href="#" (click)="seekTo(memo.timestampSeconds); false">{{memo.timestampSeconds | timestamp}}</a></h6>
-        <textarea placeholder="Notes" class="form-control" [(ngModel)]="memo.message">
-        </textarea>
-        <a href="#" class="card-link" (click)="removeMemoAtIndex(i); false">Delete</a>
-    </div>
+<div
+  class="card"
+  style="margin-top: 10px"
+  *ngFor="let memo of annotations.memos; index as i"
+>
+  <div class="card-body">
+    <h6 class="card-subtitle mb-2 text-muted">
+      <a href="#" (click)="seekTo(memo.timestampSeconds); (false)">{{
+        memo.timestampSeconds | timestamp
+      }}</a>
+    </h6>
+    <textarea
+      placeholder="Notes"
+      class="form-control"
+      [(ngModel)]="memo.message"
+    >
+    </textarea>
+    <a href="#" class="card-link" (click)="removeMemoAtIndex(i); (false)"
+      >Delete</a
+    >
+  </div>
 </div>

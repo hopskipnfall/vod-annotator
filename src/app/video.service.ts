@@ -3,14 +3,15 @@ import { YouTubePlayer } from '@angular/youtube-player';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VideoService {
   player?: YouTubePlayer;
 
-  private readonly ready: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+  private readonly ready: BehaviorSubject<Boolean> =
+    new BehaviorSubject<Boolean>(false);
 
-  constructor() { }
+  constructor() {}
 
   setPlayer(player: YouTubePlayer) {
     this.player = player;
@@ -52,7 +53,7 @@ export class VideoService {
     return this.ready.asObservable();
   }
 
-  getPlayerState(): (YT.PlayerState | undefined) {
+  getPlayerState(): YT.PlayerState | undefined {
     return this.player?.getPlayerState();
   }
 }

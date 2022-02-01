@@ -8,9 +8,8 @@ describe('VideoPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VideoPickerComponent ]
-    })
-    .compileComponents();
+      declarations: [VideoPickerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

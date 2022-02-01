@@ -1,9 +1,15 @@
 <div class="container">
-    <div class="input-group mb-3">
-        <input [(ngModel)]="url" placeholder="YouTube URL" class="form-control">
-        <div class="input-group-append">
-            <button type="button" class="btn btn-primary" (click)="launchEditor()"
-                [disabled]="!isValidUrl()">Go!</button>
-        </div>
+  <div class="input-group mb-3">
+    <input [(ngModel)]="url" placeholder="YouTube URL" class="form-control" />
+    <div class="input-group-append">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="launchEditor()"
+        [disabled]="!isValidUrl()"
+      >
+        Go!
+      </button>
     </div>
+  </div>
 </div>

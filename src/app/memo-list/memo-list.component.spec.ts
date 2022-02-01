@@ -8,9 +8,8 @@ describe('MemoListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MemoListComponent ]
-    })
-    .compileComponents();
+      declarations: [MemoListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
