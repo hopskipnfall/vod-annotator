@@ -1,12 +1,19 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { Annotations } from 'src/model';
 import { ObjectSerializerService } from '../object-serializer.service';
 import { VideoService } from '../video.service';
 import { saveAs } from 'file-saver';
 import { TimestampPipe } from '../timestamp.pipe';
+import { MemoListComponent } from '../memo-list/memo-list.component';
 
 const ARROW_LEFT = 'ArrowLeft';
 const ARROW_RIGHT = 'ArrowRight';
@@ -21,6 +28,8 @@ const K = 'k';
   styleUrls: ['./editor-view.component.scss'],
 })
 export class EditorViewComponent implements OnInit {
+  @ViewChild('memoList') memoList!: MemoListComponent;
+
   annotations!: Annotations;
 
   playerWidth = 400;
@@ -154,5 +163,9 @@ export class EditorViewComponent implements OnInit {
       new Blob([output], { type: 'text/csv;charset=utf-8' }),
       'vod_annotations.csv'
     );
+  }
+
+  addNote() {
+    this.memoList.createMemo();
   }
 }

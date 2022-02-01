@@ -42,6 +42,17 @@
               <button
                 type="button"
                 class="btn btn-primary"
+                tooltip="Comma to go back 1 frame"
+                placement="bottom"
+                (click)="goForwardSeconds(-1 / 60)"
+              >
+                <mat-icon inline="true" aria-hidden="false" aria-label="period"
+                  >chevron_left
+                </mat-icon>
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
                 tooltip="Spacebar to play/pause"
                 placement="bottom"
                 (click)="togglePlayback()"
@@ -57,6 +68,17 @@
                   aria-hidden="false"
                   aria-label="right arrow key"
                   >pause
+                </mat-icon>
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                tooltip="Period to go forward 1 frame"
+                placement="bottom"
+                (click)="goForwardSeconds(1 / 60)"
+              >
+                <mat-icon inline="true" aria-hidden="false" aria-label="period"
+                  >chevron_right
                 </mat-icon>
               </button>
               <button
@@ -113,7 +135,9 @@
               >
                 Download CSV
               </button>
-              <button type="button" class="btn btn-primary">Add Note</button>
+              <button type="button" class="btn btn-primary" (click)="addNote()">
+                Add Note
+              </button>
             </div>
           </div>
         </div>
@@ -121,7 +145,7 @@
     </div>
 
     <div class="col-sm" style="overflow-y: scroll; max-height: 100vh">
-      <app-memo-list [annotations]="annotations"></app-memo-list>
+      <app-memo-list [annotations]="annotations" #memoList></app-memo-list>
     </div>
   </div>
 </div>
