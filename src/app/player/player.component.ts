@@ -11,6 +11,7 @@ let apiLoaded = false;
 })
 export class PlayerComponent implements OnInit, AfterViewInit {
   @Input() youtubeId!: string;
+  @Input() width!: number;
 
   @ViewChild("player") player!: YouTubePlayer;
 
@@ -27,7 +28,6 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }
 
   }
-
 
   async ngAfterViewInit() {
     this.player?.ready.subscribe(a => {

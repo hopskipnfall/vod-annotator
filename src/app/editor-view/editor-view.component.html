@@ -1,35 +1,63 @@
 <div class="container">
     <div class="row">
-        <div class="col">
-            <app-player [youtubeId]="annotations.youtubeId"></app-player>
+        <div class="col-md-8">
+            <app-player [youtubeId]="annotations.youtubeId" [width]="playerWidth"></app-player>
 
-            <button type="button" class="btn btn-primary">
-                Share
-            </button>
-            &nbsp;
-            <button type="button" class="btn btn-primary" tooltip="Go back 5s" placement="bottom" (click)="goForwardSeconds(-5)">
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">replay_5</mat-icon>
-            </button>
-            &nbsp;
-            <button type="button" class="btn btn-primary" tooltip="Left arrowkey to go back 1s" placement="bottom" (click)="goForwardSeconds(-1)">
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">fast_rewind</mat-icon>
-            </button>
-            &nbsp;
-            <button type="button" class="btn btn-primary" tooltip="Spacebar to play/pause" placement="bottom" (click)="togglePlayback()">
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">play_arrow</mat-icon>
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">pause</mat-icon>
-            </button>
-            &nbsp;
-            <button type="button" class="btn btn-primary" tooltip="Right arrowkey to go forward 1s" placement="bottom" (click)="goForwardSeconds(1)">
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">fast_forward</mat-icon>
-            </button>
-            &nbsp;
-            <button type="button" class="btn btn-primary" tooltip="Go forward 5s" placement="bottom" (click)="goForwardSeconds(5)">
-                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">forward_5</mat-icon>
-            </button>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <div class="form-inline d-flex align-items-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" tooltip="Go back 5s" placement="bottom"
+                                (click)="goForwardSeconds(-5)">
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">replay_5
+                                </mat-icon>
+                            </button>
+                            <button type="button" class="btn btn-primary" tooltip="Left arrowkey to go back 1s"
+                                placement="bottom" (click)="goForwardSeconds(-1)">
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">fast_rewind
+                                </mat-icon>
+                            </button>
+                            <button type="button" class="btn btn-primary" tooltip="Spacebar to play/pause"
+                                placement="bottom" (click)="togglePlayback()">
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">play_arrow
+                                </mat-icon>
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">pause
+                                </mat-icon>
+                            </button>
+                            <button type="button" class="btn btn-primary" tooltip="Right arrowkey to go forward 1s"
+                                placement="bottom" (click)="goForwardSeconds(1)">
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">fast_forward
+                                </mat-icon>
+                            </button>
+                            <button type="button" class="btn btn-primary" tooltip="Go forward 5s" placement="bottom"
+                                (click)="goForwardSeconds(5)">
+                                <mat-icon inline="true" aria-hidden="false" aria-label="right arrow key">forward_5
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-inline d-flex align-items-right" style="float: right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" (click)="createShareLink()" tooltip="Copied to clipboard." triggers="focus">
+                                Share
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Download CSV
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Add Note
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col">
+        <div class="col-sm" style="overflow-y: scroll; max-height:100vh">
             <app-memo-list [annotations]="annotations"></app-memo-list>
         </div>
     </div>

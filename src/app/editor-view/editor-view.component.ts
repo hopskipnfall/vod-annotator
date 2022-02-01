@@ -1,7 +1,9 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { Annotations } from 'src/model';
+import { ObjectSerializerService } from '../object-serializer.service';
 import { VideoService } from '../video.service';
 
 const ARROW_LEFT = 'ArrowLeft';
@@ -19,9 +21,17 @@ const K = 'k';
 export class EditorViewComponent implements OnInit {
   annotations!: Annotations;
 
-  constructor(private video: VideoService, route: ActivatedRoute, @Inject(DOCUMENT) private document: Document) {
-    if (route.snapshot.paramMap.keys.includes('encodedMessage')) {
-      this.annotations = JSON.parse(atob(route.snapshot.paramMap.get('encodedMessage')!)) as Annotations;
+  playerWidth = 400
+
+  constructor(private video: VideoService, route: ActivatedRoute, @Inject(DOCUMENT) private document: Document, private router: Router, private urlSerializer: UrlSerializer, private objectSerializer: ObjectSerializerService, private clipboard: Clipboard) {
+    if (route.snapshot.queryParamMap.has('ytid')) {
+      this.annotations = {
+        youtubeId: route.snapshot.queryParamMap.get('ytid') || '',
+        memos: [],
+      }
+    }
+    else if (route.snapshot.paramMap.keys.includes('encodedMessage')) {
+      this.annotations = this.objectSerializer.deserializeAnnotations(route.snapshot.paramMap.get('encodedMessage')!);
     }
 
     // Periodically if the iframe has focus and take it back so we can control what the arrow keys do.
@@ -34,6 +44,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.onResize();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -47,8 +58,13 @@ export class EditorViewComponent implements OnInit {
     if (key === ARROW_LEFT) {
       this.video.seekTo(Math.max(this.video.getTime() - 1, 0));
     } else if (key === ARROW_RIGHT) {
-      // TODO: This probably shouldn't let you scroll past the end of the video. Who knows what lies beyond...
       this.video.seekTo(this.video.getTime() + 1);
+    } else if (key === COMMA) {
+      this.video.seekTo(this.video.getTime() - 1 / 60);
+      this.video.pause();
+    } else if (key === PERIOD) {
+      this.video.seekTo(this.video.getTime() + 1 / 60);
+      this.video.pause();
     } else if (key === SPACE || key === K) {
       this.togglePlayback();
 
@@ -68,5 +84,29 @@ export class EditorViewComponent implements OnInit {
     } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.UNSTARTED || state === YT.PlayerState.CUED) {
       this.video.play();
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    const width = window.innerWidth;
+
+    if (width < 768) {
+      this.playerWidth = 514
+    } else if (width < 992) {
+      this.playerWidth = 454
+    } else if (width < 1200) {
+      this.playerWidth = 613
+    } else if (width < 1400) {
+      this.playerWidth = 734
+    } else {
+      this.playerWidth = 854
+    }
+  }
+
+  createShareLink() {
+    const thingy = this.router.createUrlTree(['editor', this.objectSerializer.serializeAnnotations(this.annotations)]);
+    const path = location.origin + this.urlSerializer.serialize(thingy);
+    console.log('serialized path', path)
+    this.clipboard.copy(path)
   }
 }

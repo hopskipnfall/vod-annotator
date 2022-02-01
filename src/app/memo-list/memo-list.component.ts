@@ -22,7 +22,7 @@ export class MemoListComponent implements OnInit {
 
   createMemo() {
     this.annotations.memos.push({
-      timestampMs: this.video.getTime(),
+      timestampMs: Math.round(this.video.getTime()*10)/10,
       message: '',
     });
 
@@ -34,5 +34,9 @@ export class MemoListComponent implements OnInit {
   seekTo(seconds: number) {
     this.video.seekTo(seconds);
     this.video.play();
+  }
+
+  removeMemoAtIndex(index: number) {
+    this.annotations.memos.splice(index, 1);
   }
 }

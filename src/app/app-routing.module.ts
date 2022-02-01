@@ -9,6 +9,10 @@ const routes: Routes = [
     component: VideoPickerComponent,
   },
   {
+    path: 'editor',
+    component: EditorViewComponent,
+  },
+  {
     path: 'editor/:encodedMessage',
     component: EditorViewComponent,
   },
