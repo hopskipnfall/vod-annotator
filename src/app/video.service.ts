@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, first, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class VideoService {
 
   private readonly ready: BehaviorSubject<Boolean> =
     new BehaviorSubject<Boolean>(false);
-
+    
   constructor() {}
 
   setPlayer(player: YouTubePlayer) {
@@ -55,5 +55,15 @@ export class VideoService {
 
   getPlayerState(): YT.PlayerState | undefined {
     return this.player?.getPlayerState();
+  }
+
+  getSelectedQualityLevel(): Observable<YT.SuggestedVideoQuality> {
+    if (!this.player) {
+      throw Error("player isn't loaded yet!");
+    }
+
+    return this.player?.playbackQualityChange.pipe(
+      map((event) => event.data as YT.SuggestedVideoQuality)
+    );
   }
 }

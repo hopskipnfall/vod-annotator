@@ -30,6 +30,8 @@ const K = 'k';
 export class EditorViewComponent implements OnInit {
   @ViewChild('memoList') memoList!: MemoListComponent;
 
+  selectedQualityLevel?: YT.SuggestedVideoQuality;
+
   annotations!: Annotations;
 
   playerWidth = 400;
@@ -58,14 +60,25 @@ export class EditorViewComponent implements OnInit {
     // Periodically if the iframe has focus and take it back so we can control what the arrow keys do.
     setInterval(() => {
       if (document.activeElement?.tagName === 'IFRAME') {
-        console.info('YouTube iframe is in focus, blurring');
+        console.info(
+          'YouTube iframe is in focus, blurring to maintain keyboard shortcuts'
+        );
         (document.activeElement as HTMLElement).blur();
       }
-    }, 500);
+      // 3 seconds is slow enough where users can change quality if they're quick. Unfortunately YT removed the ability to set quality via the JS API.
+    }, 3000);
   }
 
   ngOnInit(): void {
     this.onResize();
+
+    this.video.getReady().subscribe((ready) => {
+      if (!ready) return;
+
+      this.video.getSelectedQualityLevel().subscribe((level) => {
+        this.selectedQualityLevel = level;
+      });
+    });
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -75,16 +88,26 @@ export class EditorViewComponent implements OnInit {
       return;
     }
 
+    const fps60QualityLevels: YT.SuggestedVideoQuality[] = [
+      'hd1080',
+      'hd720',
+      // No idea what this means, but let's err on the side of 60fps.
+      'default',
+    ];
+    const frameLength = fps60QualityLevels.includes(this.selectedQualityLevel!)
+      ? 1 / 60
+      : 1 / 30;
+
     const key = event.key;
     if (key === ARROW_LEFT) {
       this.video.seekTo(Math.max(this.video.getTime() - 1, 0));
     } else if (key === ARROW_RIGHT) {
       this.video.seekTo(this.video.getTime() + 1);
     } else if (key === COMMA) {
-      this.video.seekTo(this.video.getTime() - 1 / 60);
+      this.video.seekTo(this.video.getTime() - frameLength);
       this.video.pause();
     } else if (key === PERIOD) {
-      this.video.seekTo(this.video.getTime() + 1 / 60);
+      this.video.seekTo(this.video.getTime() + frameLength);
       this.video.pause();
     } else if (key === SPACE || key === K) {
       this.togglePlayback();

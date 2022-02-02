@@ -13,6 +13,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { TimestampPipe } from './timestamp.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
