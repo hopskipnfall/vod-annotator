@@ -100,9 +100,9 @@ export class EditorViewComponent implements OnInit {
 
     const key = event.key;
     if (key === ARROW_LEFT) {
-      this.video.seekTo(Math.max(this.video.getTime() - 1, 0));
+      this.video.seekTo(Math.max(this.video.getTime() - 2, 0));
     } else if (key === ARROW_RIGHT) {
-      this.video.seekTo(this.video.getTime() + 1);
+      this.video.seekTo(this.video.getTime() + 2);
     } else if (key === COMMA) {
       this.video.seekTo(this.video.getTime() - frameLength);
       this.video.pause();
