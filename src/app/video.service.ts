@@ -10,7 +10,7 @@ export class VideoService {
 
   private readonly ready: BehaviorSubject<Boolean> =
     new BehaviorSubject<Boolean>(false);
-    
+
   constructor() {}
 
   setPlayer(player: YouTubePlayer) {

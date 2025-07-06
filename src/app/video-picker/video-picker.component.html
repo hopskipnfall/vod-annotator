@@ -1,15 +1,38 @@
-<div class="container">
-  <div class="input-group mb-3">
-    <input [(ngModel)]="url" placeholder="YouTube URL" class="form-control" />
-    <div class="input-group-append">
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="launchEditor()"
-        [disabled]="!isValidUrl()"
-      >
-        Go!
-      </button>
+<div class="container-fluid">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <br />
+      <h1 class="display-6">
+        VOD Annotator
+        <button type="button" class="btn btn-link" [routerLink]="['/']">
+          Annotate a new video
+        </button>
+      </h1>
     </div>
   </div>
+
+  <div class="container">
+    <div class="input-group mb-3">
+      <input [(ngModel)]="url" placeholder="YouTube URL" class="form-control" />
+      <div class="input-group-append">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="launchEditor()"
+          [disabled]="!isValidUrl()"
+        >
+          Go!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align: center; margin: 30px" class="text-muted">
+    Made by
+    <a href="https://twitter.com/6kRt62r2zvKp5Rh" target="_blank">jonnjonn</a>.
+    Code is on
+    <a href="https://github.com/hopskipnfall/vod-annotator" target="_blank"
+      >GitHub</a
+    >.
+  </p>
 </div>
