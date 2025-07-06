@@ -35,6 +35,8 @@ export class EditorViewComponent implements OnInit {
   annotations!: Annotations;
 
   playerWidth = 400;
+  widthWidth = 0;
+  singleColumnMode = false;
 
   constructor(
     private video: VideoService,
@@ -139,7 +141,9 @@ export class EditorViewComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.playerWidth = window.innerWidth * 0.62;
+    this.singleColumnMode = window.innerWidth < 768;
+    this.playerWidth = window.innerWidth * (this.singleColumnMode ? 0.9 : 0.62);
+    this.widthWidth = window.innerWidth;
   }
 
   createShareLink() {
