@@ -1,12 +1,25 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
-      <app-player
-        [youtubeId]="annotations.youtubeId"
-        [width]="playerWidth"
-      ></app-player>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <br />
+          <h1 class="display-6">
+            VOD Annotator
+            <button type="button" class="btn btn-link" [routerLink]="['/']">
+              Annotate a new video
+            </button>
+          </h1>
+        </div>
+      </div>
 
-      <br />
+      <div style="text-align: center">
+        <app-player
+          [youtubeId]="annotations.youtubeId"
+          [width]="playerWidth"
+        ></app-player>
+      </div>
+
       <div class="row">
         <div class="col">
           <div class="form-inline d-flex align-items-center">
@@ -142,9 +155,21 @@
           </div>
         </div>
       </div>
+
+      <p style="text-align: center; margin: 30px" class="text-muted">
+        Made by
+        <a href="https://twitter.com/6kRt62r2zvKp5Rh" target="_blank">nue</a>.
+        Code is on
+        <a href="https://github.com/hopskipnfall/vod-annotator" target="_blank"
+          >GitHub</a
+        >.
+      </p>
     </div>
 
-    <div class="col-sm" style="overflow-y: scroll; max-height: 100vh">
+    <div
+      class="col-sm memo-list-bg"
+      style="overflow-y: scroll; max-height: 100vh"
+    >
       <app-memo-list [annotations]="annotations" #memoList></app-memo-list>
     </div>
   </div>

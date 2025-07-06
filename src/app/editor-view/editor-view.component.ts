@@ -139,19 +139,7 @@ export class EditorViewComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    const width = window.innerWidth;
-
-    if (width < 768) {
-      this.playerWidth = 514;
-    } else if (width < 992) {
-      this.playerWidth = 454;
-    } else if (width < 1200) {
-      this.playerWidth = 613;
-    } else if (width < 1400) {
-      this.playerWidth = 734;
-    } else {
-      this.playerWidth = 854;
-    }
+    this.playerWidth = window.innerWidth * 0.62;
   }
 
   createShareLink() {

@@ -1,13 +1,9 @@
-<button
-  type="button"
-  class="btn btn-primary"
-  (click)="createMemo()"
-  [disabled]="!playerReady"
->
-  Add Note
-</button>
-
-<br />
+<div *ngIf="annotations.memos.length == 0" class="container">
+  <br />
+  <div class="card" style="margin-top: 10px">
+    <div class="card-body">Add a new note to get started.</div>
+  </div>
+</div>
 
 <div
   class="card"
