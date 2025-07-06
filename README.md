@@ -6,9 +6,29 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Deployment
+
+Build prod version:
+
+```sh
+ng build --prod --base-href https://hopskipnfall.github.io/vod-annotator/
+```
+
+Deploy to GitHub Pages:
+
+```sh
+angular-cli-ghpages -d dist/vod-annotator/ --no-silent
+```
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Run formatter
+
+```sh
+npx prettier . --write
+```
 
 ## Build
 
