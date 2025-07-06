@@ -1,6 +1,140 @@
-<div class="container-fluid" style="overflow-y: hidden; max-height: 100vh">
-  <div class="row">
-    <div class="col-md-8">
+<div
+  *ngIf="singleColumnMode"
+  class="mobile-flex-wrapper"
+  style="display: flex; flex-direction: column; height: 100vh; min-height: 0"
+>
+  <!-- Main content above -->
+  <div>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <br />
+        <h1 class="display-6">
+          VOD Annotator
+          <!-- <button type="button" class="btn btn-link" [routerLink]="['/']">
+            Annotate a new video
+          </button> -->
+        </h1>
+      </div>
+    </div>
+    <div style="text-align: center">
+      <app-player
+        [youtubeId]="annotations.youtubeId"
+        [width]="playerWidth"
+      ></app-player>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-inline d-flex align-items-center">
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-primary"
+              placement="bottom"
+              (click)="goForwardSeconds(-5)"
+            >
+              -5
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              placement="bottom"
+              (click)="goForwardSeconds(-1 / 60)"
+            >
+              <mat-icon inline="true" aria-hidden="false" aria-label="period"
+                >chevron_left
+              </mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              placement="bottom"
+              (click)="togglePlayback()"
+            >
+              <mat-icon
+                inline="true"
+                aria-hidden="false"
+                aria-label="right arrow key"
+                >pause
+              </mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              placement="bottom"
+              (click)="goForwardSeconds(1 / 60)"
+            >
+              <mat-icon inline="true" aria-hidden="false" aria-label="period"
+                >chevron_right
+              </mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              placement="bottom"
+              (click)="goForwardSeconds(5)"
+            >
+              +5
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-inline d-flex align-items-right" style="float: right">
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="createShareLink()"
+              tooltip="Copied to clipboard."
+              triggers="focus"
+            >
+              <mat-icon inline="true" aria-hidden="false" aria-label="period"
+                >share
+              </mat-icon>
+            </button>
+            <button type="button" class="btn btn-primary" (click)="saveAsCsv()">
+              CSV
+            </button>
+            <button type="button" class="btn btn-primary" (click)="addNote()">
+              <mat-icon
+                inline="true"
+                aria-hidden="false"
+                aria-label="right arrow key"
+                >add_circle
+              </mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Memo list fills remaining space -->
+  <div style="flex: 1 1 auto; overflow-y: auto; min-height: 0; padding: 15px">
+    <app-memo-list [annotations]="annotations" #memoList></app-memo-list>
+    <p
+      style="text-align: center; margin: 30px; flex-shrink: 0"
+      class="text-muted"
+    >
+      Made by
+      <a href="https://twitter.com/6kRt62r2zvKp5Rh" target="_blank">nue</a>.
+      Code is on
+      <a href="https://github.com/hopskipnfall/vod-annotator" target="_blank"
+        >GitHub</a
+      >.
+    </p>
+  </div>
+</div>
+
+<!-- Desktop layout (unchanged) -->
+<div
+  *ngIf="!singleColumnMode"
+  class="container-fluid"
+  style="height: 100vh; overflow: hidden"
+>
+  <div class="row" style="height: 100%">
+    <div class="col-md-8 d-flex flex-column" style="height: 100%">
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
           <br />
@@ -18,8 +152,6 @@
           [youtubeId]="annotations.youtubeId"
           [width]="playerWidth"
         ></app-player>
-        <br />
-        {{ widthWidth }}
       </div>
 
       <div class="row">
@@ -33,12 +165,7 @@
                 placement="bottom"
                 (click)="goForwardSeconds(-5)"
               >
-                <mat-icon
-                  inline="true"
-                  aria-hidden="false"
-                  aria-label="right arrow key"
-                  >replay_5
-                </mat-icon>
+                -5
               </button>
               <button
                 type="button"
@@ -47,12 +174,7 @@
                 placement="bottom"
                 (click)="goForwardSeconds(-2)"
               >
-                <mat-icon
-                  inline="true"
-                  aria-hidden="false"
-                  aria-label="right arrow key"
-                  >fast_rewind
-                </mat-icon>
+                -2
               </button>
               <button
                 type="button"
@@ -103,12 +225,7 @@
                 placement="bottom"
                 (click)="goForwardSeconds(2)"
               >
-                <mat-icon
-                  inline="true"
-                  aria-hidden="false"
-                  aria-label="right arrow key"
-                  >fast_forward
-                </mat-icon>
+                +2
               </button>
               <button
                 type="button"
@@ -117,12 +234,7 @@
                 placement="bottom"
                 (click)="goForwardSeconds(5)"
               >
-                <mat-icon
-                  inline="true"
-                  aria-hidden="false"
-                  aria-label="right arrow key"
-                  >forward_5
-                </mat-icon>
+                +5
               </button>
             </div>
           </div>
@@ -157,30 +269,20 @@
           </div>
         </div>
       </div>
-
-      <p
-        *ngIf="!singleColumnMode"
-        style="text-align: center; margin: 30px"
-        class="text-muted"
-      >
-        Made by
-        <a href="https://twitter.com/6kRt62r2zvKp5Rh" target="_blank">nue</a>.
-        Code is on
-        <a href="https://github.com/hopskipnfall/vod-annotator" target="_blank"
-          >GitHub</a
-        >.
-      </p>
     </div>
 
     <div
-      class="col-sm memo-list-bg"
-      style="overflow-y: scroll; max-height: 100vh"
+      class="col-sm memo-list-bg d-flex flex-column"
+      style="height: 100%; min-height: 0"
     >
-      <app-memo-list [annotations]="annotations" #memoList></app-memo-list>
+      <div
+        style="flex: 1 1 auto; overflow-y: auto; min-height: 0; padding: 15px"
+      >
+        <app-memo-list [annotations]="annotations" #memoList></app-memo-list>
+      </div>
 
       <p
-        *ngIf="singleColumnMode"
-        style="text-align: center; margin: 30px"
+        style="text-align: center; margin: 30px; flex-shrink: 0"
         class="text-muted"
       >
         Made by
