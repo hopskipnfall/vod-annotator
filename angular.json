@@ -11,6 +11,14 @@
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "i18n": {
+          "sourceLocale": "en-US",
+          "locales": {
+            "ja": {
+              "translation": "src/locale/messages.ja.xlf"
+            }
+          }
         }
       },
       "root": "",

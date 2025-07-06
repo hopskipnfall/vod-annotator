@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="4037695206354427077" datatype="html">
+        <source> VOD Annotator <x id="START_TAG_BUTTON" ctype="x-button" equiv-text="&lt;button type=&quot;button&quot; class=&quot;btn btn-link&quot; [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/> Annotate a new video <x id="CLOSE_TAG_BUTTON" ctype="x-button" equiv-text="&lt;/button&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">5,9</context>
+        </context-group>
+        <source> VOD Annotatozzzzzzr <x id="START_TAG_BUTTON" ctype="x-button" equiv-text="&lt;button type=&quot;button&quot; class=&quot;btn btn-link&quot; [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/> Annotate a new video <x id="CLOSE_TAG_BUTTON" ctype="x-button" equiv-text="&lt;/button&gt;"/></source>
+      </trans-unit>
+      <trans-unit id="5383291548926197422" datatype="html">
+        <source> Made by <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://twitter.com/6kRt62r2zvKp5Rh&quot; target=&quot;_blank&quot;&gt;"/>jonnjonn<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+    &gt;"/>. Code is on <x id="START_LINK_1" equiv-text="&lt;a href=&quot;https://github.com/hopskipnfall/vod-annotator&quot; target=&quot;_blank&quot;
+      &gt;"/>GitHub<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+    &gt;"/>. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.html</context>
+          <context context-type="linenumber">16,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8996953929715833842" datatype="html">
+        <source> Download CSV </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/editor-view/editor-view.component.html</context>
+          <context context-type="linenumber">136,138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6504733781847320955" datatype="html">
+        <source> Add Note </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/editor-view/editor-view.component.html</context>
+          <context context-type="linenumber">139,141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9064866883221065058" datatype="html">
+        <source> Add Note
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/memo-list/memo-list.component.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7022070615528435141" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/memo-list/memo-list.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4924844061743059454" datatype="html">
+        <source> Go! </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/video-picker/video-picker.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
