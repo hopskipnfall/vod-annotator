@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -19,3 +20,32 @@ jobs:
       - run: npx prettier --check src
       - run: npx ng build
       - run: npx ng test --watch=false --browsers=ChromeHeadlessCI
+
+  # Publishes to the gh-pages branch, which GitHub Pages serves.
+  deploy:
+    needs: build-and-test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: deploy-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npx ng build --configuration production --base-href https://hopskipnfall.github.io/vod-annotator/
+      - name: Publish to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          npx --yes angular-cli-ghpages@3.1.0
+          --dir=dist/vod-annotator
+          --name="github-actions[bot]"
+          --email="41898282+github-actions[bot]@users.noreply.github.com"
+          --repo="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          --no-silent
