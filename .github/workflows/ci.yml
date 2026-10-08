@@ -14,8 +14,9 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      # @angular/youtube-player's peer range doesn't match Angular 13.
-      - run: npm ci --legacy-peer-deps
+      # package-lock.json is out of sync with package.json, so `npm ci` fails;
+      # and @angular/youtube-player's peer range doesn't match Angular 13.
+      - run: npm install --legacy-peer-deps --no-audit --no-fund
       - run: npx prettier --check src
       - run: npx ng build
       - run: npx ng test --watch=false --browsers=ChromeHeadlessCI
