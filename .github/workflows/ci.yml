@@ -14,7 +14,8 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      # @angular/youtube-player's peer range doesn't match Angular 13.
+      - run: npm ci --legacy-peer-deps
       - run: npx prettier --check src
       - run: npx ng build
       - run: npx ng test --watch=false --browsers=ChromeHeadlessCI
