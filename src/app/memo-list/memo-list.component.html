@@ -5,6 +5,18 @@
   </div>
 </div>
 
+<div *ngIf="annotations.memos.length > 0" class="form-check start-early">
+  <input
+    type="checkbox"
+    class="form-check-input"
+    id="start-early"
+    [(ngModel)]="startEarly"
+  />
+  <label class="form-check-label" for="start-early"
+    >Start playback 1 second before the timestamp</label
+  >
+</div>
+
 <div
   *ngIf="hasKindedMemos()"
   class="filters btn-group btn-group-sm w-100"

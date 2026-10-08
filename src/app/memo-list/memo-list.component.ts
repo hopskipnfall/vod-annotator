@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { Annotations, Memo, MemoKind } from 'src/model';
 import { VideoService } from '../video.service';
 
+const SEEK_LEAD_IN_SECONDS = 1;
+
 @Component({
   selector: 'app-memo-list',
   templateUrl: './memo-list.component.html',
@@ -12,6 +14,8 @@ export class MemoListComponent implements OnInit {
   @Input() annotations!: Annotations;
 
   playerReady: Observable<Boolean>;
+
+  startEarly = true;
 
   // View-only filters; they never affect share links or CSV export.
   showWins = true;
@@ -66,7 +70,9 @@ export class MemoListComponent implements OnInit {
   }
 
   seekTo(seconds: number) {
-    this.video.seekTo(seconds);
+    this.video.seekTo(
+      this.startEarly ? Math.max(seconds - SEEK_LEAD_IN_SECONDS, 0) : seconds
+    );
     this.video.play();
   }
 
