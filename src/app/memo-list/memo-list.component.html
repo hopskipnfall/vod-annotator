@@ -6,24 +6,74 @@
 </div>
 
 <div
-  class="card"
-  style="margin-top: 10px"
-  *ngFor="let memo of annotations.memos; index as i"
+  *ngIf="hasKindedMemos()"
+  class="filters btn-group btn-group-sm w-100"
+  role="group"
+  aria-label="Filter notes"
 >
-  <div class="card-body">
-    <h6 class="card-subtitle mb-2 text-muted">
-      <a href="#" (click)="seekTo(memo.timestampSeconds); (false)">{{
-        memo.timestampSeconds | timestamp
-      }}</a>
-    </h6>
-    <textarea
-      placeholder="Notes"
-      class="form-control"
-      [(ngModel)]="memo.message"
-    >
-    </textarea>
-    <a href="#" class="card-link" (click)="removeMemoAtIndex(i); (false)"
-      >Delete</a
-    >
-  </div>
+  <input
+    type="checkbox"
+    class="btn-check"
+    id="filter-wins"
+    autocomplete="off"
+    [(ngModel)]="showWins"
+  />
+  <label class="btn btn-outline-success" for="filter-wins"
+    >Wins ({{ count("win") }})</label
+  >
+  <input
+    type="checkbox"
+    class="btn-check"
+    id="filter-losses"
+    autocomplete="off"
+    [(ngModel)]="showLosses"
+  />
+  <label class="btn btn-outline-danger" for="filter-losses"
+    >Losses ({{ count("loss") }})</label
+  >
+  <input
+    type="checkbox"
+    class="btn-check"
+    id="filter-memos"
+    autocomplete="off"
+    [(ngModel)]="showMemos"
+  />
+  <label class="btn btn-outline-secondary" for="filter-memos"
+    >Memos ({{ count() }})</label
+  >
 </div>
+
+<div *ngIf="allHidden()" class="text-muted text-center" style="margin: 20px">
+  All notes are hidden by the filters above.
+</div>
+
+<ng-container *ngFor="let memo of annotations.memos; index as i">
+  <div
+    *ngIf="isVisible(memo)"
+    class="card"
+    style="margin-top: 10px"
+    [class.memo-win]="memo.kind === 'win'"
+    [class.memo-loss]="memo.kind === 'loss'"
+  >
+    <div class="card-body">
+      <h6 class="card-subtitle mb-2 text-muted">
+        <a href="#" (click)="seekTo(memo.timestampSeconds); (false)">{{
+          memo.timestampSeconds | timestamp
+        }}</a>
+        <span *ngIf="memo.kind === 'win'" class="kind-label">Neutral win</span>
+        <span *ngIf="memo.kind === 'loss'" class="kind-label"
+          >Neutral loss</span
+        >
+      </h6>
+      <textarea
+        placeholder="Notes"
+        class="form-control"
+        [(ngModel)]="memo.message"
+      >
+      </textarea>
+      <a href="#" class="card-link" (click)="removeMemoAtIndex(i); (false)"
+        >Delete</a
+      >
+    </div>
+  </div>
+</ng-container>

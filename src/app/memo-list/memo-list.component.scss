@@ -1,0 +1,28 @@
+// Dark text on light tints keeps contrast above WCAG AA; the label text means
+// the kind is never conveyed by color alone.
+.memo-win {
+  border-left: 5px solid #198754;
+  background: #e6f4ec;
+
+  .kind-label {
+    color: #0f5132;
+  }
+}
+
+.memo-loss {
+  border-left: 5px solid #dc3545;
+  background: #fbe9eb;
+
+  .kind-label {
+    color: #842029;
+  }
+}
+
+.kind-label {
+  margin-left: 0.5em;
+  font-weight: 500;
+}
+
+.filters {
+  margin-top: 10px;
+}

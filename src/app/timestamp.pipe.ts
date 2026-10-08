@@ -5,8 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimestampPipe implements PipeTransform {
   transform(numSeconds: number, ...args: unknown[]): string {
-    const minutes = Math.floor(numSeconds / 60);
-    const formattedSeconds = (numSeconds % 60)
+    // Round first so e.g. 59.96 becomes 1:00.0 rather than 0:60.0.
+    const total = Math.round(numSeconds * 10) / 10;
+    const minutes = Math.floor(total / 60);
+    const formattedSeconds = (total - minutes * 60)
       .toLocaleString(undefined, {
         minimumFractionDigits: 1,
         maximumFractionDigits: 1,
