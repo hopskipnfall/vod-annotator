@@ -21,6 +21,7 @@ const COMMA = ',';
 const PERIOD = '.';
 const SPACE = ' ';
 const K = 'k';
+const SHARE_LINK_WARNING_LENGTH = 2000;
 
 @Component({
   selector: 'app-editor-view',
@@ -33,6 +34,9 @@ export class EditorViewComponent implements OnInit {
   selectedQualityLevel?: YT.SuggestedVideoQuality;
 
   annotations!: Annotations;
+
+  shareWarning?: string;
+  private shareWarningTimeout?: ReturnType<typeof setTimeout>;
 
   playerWidth = 400;
   singleColumnMode = false;
@@ -156,10 +160,25 @@ export class EditorViewComponent implements OnInit {
       location.origin +
       this.location.prepareExternalUrl(this.urlSerializer.serialize(thingy));
     console.log('serialized path', path);
-    if (this.clipboard.copy(path)) {
-      // TODO: Show a toast.
-      // TODO: Give a warning if the length is over 2K characters that it might not work in all browsers.
+    this.clipboard.copy(path);
+    this.showLengthWarning(path.length);
+  }
+
+  private showLengthWarning(length: number) {
+    clearTimeout(this.shareWarningTimeout);
+    if (length <= SHARE_LINK_WARNING_LENGTH) {
+      this.shareWarning = undefined;
+      return;
     }
+    this.shareWarning =
+      `This link is ${length.toLocaleString()} characters long. ` +
+      'Some browsers, chat apps and link shorteners may truncate links over ' +
+      `${SHARE_LINK_WARNING_LENGTH.toLocaleString()} characters. ` +
+      'Use "Download CSV" to keep a copy that cannot be truncated.';
+    this.shareWarningTimeout = setTimeout(
+      () => (this.shareWarning = undefined),
+      15000
+    );
   }
 
   saveAsCsv() {
@@ -167,14 +186,17 @@ export class EditorViewComponent implements OnInit {
     // https://stackoverflow.com/a/17808731/2875073
     const sanitize = (s: string) => s.replace(/"/g, '""');
 
-    let output = 'Timestamp,Comment,YouTube Link\n';
+    let output = 'Timestamp,Comment,YouTube Link,Type\n';
     for (let i = 0; i < this.annotations.memos.length; i++) {
       const memo = this.annotations.memos[i];
       const timestampString = this.timestamp.transform(memo.timestampSeconds);
       const url = `https://www.youtube.com/watch?v=${
         this.annotations.youtubeId
       }&t=${Math.floor(memo.timestampSeconds)}s`;
-      output += `"${timestampString}","${sanitize(memo.message)}","${url}"\n`;
+      const type = memo.kind ?? 'memo';
+      output += `"${timestampString}","${sanitize(
+        memo.message
+      )}","${url}","${type}"\n`;
     }
 
     saveAs(

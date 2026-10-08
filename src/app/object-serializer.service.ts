@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Annotations } from 'src/model';
+import { Annotations, MemoKind } from 'src/model';
+
+const V2_MARKER = 'v2';
+const KIND_TO_CODE: Record<MemoKind, string> = { win: 'w', loss: 'l' };
+const CODE_TO_KIND: Record<string, MemoKind | undefined> = {
+  w: 'win',
+  l: 'loss',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -27,14 +34,30 @@ export class ObjectSerializerService {
     );
   }
 
+  /**
+   * v1: [youtubeId, ts, msg, ts, msg, ...]
+   * v2: [youtubeId, "v2", ts, msg, kind, ts, msg, kind, ...] with kind "w", "l" or "".
+   * v1 is emitted unless some memo has a kind, so ordinary links stay unchanged.
+   */
   serializeAnnotations(annotations: Annotations): string {
-    const simplified = [
-      annotations.youtubeId,
-      ...annotations.memos.flatMap((memo) => [
-        memo.timestampSeconds,
-        memo.message,
-      ]),
-    ];
+    const hasKinds = annotations.memos.some((memo) => memo.kind);
+    const simplified = hasKinds
+      ? [
+          annotations.youtubeId,
+          V2_MARKER,
+          ...annotations.memos.flatMap((memo) => [
+            memo.timestampSeconds,
+            memo.message,
+            memo.kind ? KIND_TO_CODE[memo.kind] : '',
+          ]),
+        ]
+      : [
+          annotations.youtubeId,
+          ...annotations.memos.flatMap((memo) => [
+            memo.timestampSeconds,
+            memo.message,
+          ]),
+        ];
     return this.b64EncodeUnicode(JSON.stringify(simplified));
   }
 
@@ -47,6 +70,22 @@ export class ObjectSerializerService {
       youtubeId: parsed[0] as string,
       memos: [],
     };
+
+    // A v1 payload always has a number (or nothing) at index 1.
+    if (typeof parsed[1] === 'string') {
+      if (parsed[1] !== V2_MARKER) {
+        throw new Error(`Unsupported annotations format: ${parsed[1]}`);
+      }
+      for (let i = 2; i + 2 < parsed.length; i += 3) {
+        const kind = CODE_TO_KIND[parsed[i + 2] as string];
+        annotations.memos.push({
+          timestampSeconds: parsed[i] as number,
+          message: parsed[i + 1] as string,
+          ...(kind ? { kind } : {}),
+        });
+      }
+      return annotations;
+    }
 
     for (let i = 1; i + 1 < parsed.length; i += 2) {
       annotations.memos.push({

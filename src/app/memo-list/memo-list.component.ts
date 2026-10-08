@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Annotations } from 'src/model';
+import { Annotations, Memo, MemoKind } from 'src/model';
 import { VideoService } from '../video.service';
 
 @Component({
@@ -13,13 +13,46 @@ export class MemoListComponent implements OnInit {
 
   playerReady: Observable<Boolean>;
 
+  // View-only filters; they never affect share links or CSV export.
+  showWins = true;
+  showLosses = true;
+  showMemos = true;
+
   constructor(private video: VideoService) {
     this.playerReady = video.getReady();
   }
 
   ngOnInit() {}
 
+  hasKindedMemos(): boolean {
+    return this.annotations.memos.some((memo) => memo.kind);
+  }
+
+  count(kind?: MemoKind): number {
+    return this.annotations.memos.filter((memo) => memo.kind === kind).length;
+  }
+
+  isVisible(memo: Memo): boolean {
+    switch (memo.kind) {
+      case 'win':
+        return this.showWins;
+      case 'loss':
+        return this.showLosses;
+      default:
+        return this.showMemos;
+    }
+  }
+
+  allHidden(): boolean {
+    return (
+      this.annotations.memos.length > 0 &&
+      !this.annotations.memos.some((memo) => this.isVisible(memo))
+    );
+  }
+
   createMemo() {
+    // Otherwise the new note would be created invisibly.
+    this.showMemos = true;
     this.annotations.memos.push({
       timestampSeconds: Math.round(this.video.getTime() * 10) / 10,
       message: '',
