@@ -8,7 +8,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Deployment
 
-Build prod version:
+Pushes to `main` that pass CI are deployed automatically to GitHub Pages by `.github/workflows/ci.yml` (it publishes to the `gh-pages` branch). It can also be re-run manually from the Actions tab ("Run workflow").
+
+To deploy by hand instead, build the prod version:
 
 ```sh
 ng build --prod --base-href https://hopskipnfall.github.io/vod-annotator/
